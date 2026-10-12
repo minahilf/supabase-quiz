@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supabase Mini Test - 30 MCQs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#22c55e;
+  --g-dark:#15803d;
+  --g-deep:#14532d;
+  --g-soft:#dcfce7;
+  --g-line:#bbf7d0;
+  --g-shade:#86efac;
+  --mint:#f0fdf4;
+  --white:#ffffff;
+  --text:#14392a;
+  --muted:#5b8a72;
+  --bad:#f43f5e;
+  --bad-bg:#fff1f3;
+  --bad-line:#fecdd3;
+  --sun:#fde68a;
+  --radius:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Fredoka",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color:var(--text);
+  background-color:var(--mint);
+  background-image:
+    radial-gradient(circle at 1px 1px, var(--g-line) 2px, transparent 2.5px);
+  background-size:28px 28px;
+  min-height:100vh;
+  line-height:1.5;
+  padding:20px 14px 70px;
+}
+.wrap{max-width:700px;margin:0 auto;position:relative}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
+.hidden{display:none !important}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.86em;
+  background:var(--g-soft);
+  color:var(--g-deep);
+  border-radius:8px;
+  padding:1px 7px;
+  white-space:nowrap;
+}
+
+/* ---------- cards & buttons ---------- */
+.card{
+  background:var(--white);
+  border:3px solid var(--g-line);
+  border-radius:var(--radius);
+  box-shadow:0 7px 0 var(--g-line);
+  padding:22px;
+}
+.btn{
+  background:var(--g);
+  color:#fff;
+  border:none;
+  border-radius:999px;
+  box-shadow:0 5px 0 var(--g-dark);
+  padding:13px 26px;
+  font-weight:600;
+  font-size:1.05rem;
+  transition:transform .1s, box-shadow .1s, filter .1s;
+}
+.btn:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 6px 0 var(--g-dark)}
+.btn:active{transform:translateY(5px);box-shadow:0 0 0 var(--g-dark)}
+.btn.white{background:#fff;color:var(--g-dark);border:3px solid var(--g-shade);box-shadow:0 5px 0 var(--g-shade);padding:10px 24px}
+.btn.white:active{box-shadow:0 0 0 var(--g-shade)}
+.btn.big{width:100%;font-size:1.25rem;padding:16px 24px}
+
+/* ---------- start ---------- */
+.hero{text-align:center;position:relative;overflow:hidden}
+.mascot{width:96px;height:96px;margin:0 auto 6px;display:block;animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-3deg)}}
+.hero h1{font-size:clamp(2rem,8vw,3rem);line-height:1.08;font-weight:700;color:var(--g-deep)}
+.hero p{margin:10px auto 20px;color:var(--muted);font-size:1.05rem;max-width:520px}
+.opt-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;font-weight:500;font-size:.98rem;color:var(--g-dark)}
+.opt-row input{width:22px;height:22px;accent-color:var(--g)}
+.topics-title{margin:26px 4px 12px;font-weight:600;font-size:1.1rem;color:var(--g-deep)}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.topic{
+  text-align:left;
+  background:#fff;
+  border:3px solid var(--g-line);
+  border-radius:20px;
+  box-shadow:0 5px 0 var(--g-line);
+  padding:14px 18px;
+  transition:transform .1s, box-shadow .1s, background .15s;
+}
+.topic:hover{background:var(--g-soft);transform:translateY(-2px);box-shadow:0 7px 0 var(--g-shade)}
+.topic:active{transform:translateY(5px);box-shadow:0 0 0 var(--g-line)}
+.topic b{display:block;font-size:1.1rem;color:var(--g-deep)}
+.topic span{font-size:.9rem;color:var(--muted)}
+
+/* ---------- quiz ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.pill{
+  background:#fff;
+  border:3px solid var(--g-line);
+  border-radius:999px;
+  padding:3px 14px;
+  font-weight:600;
+  font-size:.95rem;
+  color:var(--g-dark);
+}
+.pill.score{background:var(--g);border-color:var(--g);color:#fff}
+.bar{height:20px;border-radius:999px;background:#fff;border:3px solid var(--g-line);overflow:hidden;margin-bottom:18px}
+.bar i{
+  display:block;height:100%;width:0;border-radius:999px;
+  background:repeating-linear-gradient(-45deg,var(--g) 0 12px,#34d27b 12px 24px);
+  transition:width .35s;
+}
+.q-text{font-size:clamp(1.2rem,4.8vw,1.5rem);line-height:1.3;font-weight:600;color:var(--g-deep);margin-bottom:14px}
+pre.code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.92rem;
+  line-height:1.55;
+  background:#f6fff9;
+  color:var(--g-deep);
+  border:3px dashed var(--g-shade);
+  border-radius:16px;
+  padding:12px 14px;
+  margin-bottom:16px;
+  overflow-x:auto;
+  white-space:pre;
+}
+.options{display:grid;gap:12px}
+.option{
+  display:flex;align-items:center;gap:12px;
+  text-align:left;
+  width:100%;
+  background:#fff;
+  border:3px solid var(--g-line);
+  border-radius:18px;
+  box-shadow:0 5px 0 var(--g-line);
+  padding:12px 14px;
+  font-weight:500;
+  font-size:1.03rem;
+  line-height:1.35;
+  transition:transform .1s, box-shadow .1s, background .15s, border-color .15s;
+}
+.option .letter{
+  flex:none;
+  width:36px;height:36px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:var(--g-soft);
+  color:var(--g-dark);
+  font-weight:700;
+}
+.option .mark{margin-left:auto;font-size:1.4rem;font-weight:700}
+.option:not(:disabled):hover{background:var(--g-soft);border-color:var(--g-shade);transform:translateY(-2px);box-shadow:0 7px 0 var(--g-shade)}
+.option:not(:disabled):active{transform:translateY(5px);box-shadow:0 0 0 var(--g-line)}
+.option:disabled{cursor:default}
+.option.correct{background:var(--g-soft);border-color:var(--g);box-shadow:0 5px 0 var(--g);animation:pop .35s}
+.option.correct .letter{background:var(--g);color:#fff}
+.option.correct .mark{color:var(--g-dark)}
+.option.wrong{background:var(--bad-bg);border-color:var(--bad);box-shadow:0 5px 0 var(--bad);animation:shake .35s}
+.option.wrong .letter{background:var(--bad);color:#fff}
+.option.wrong .mark{color:var(--bad)}
+.option.dim{opacity:.5}
+@keyframes shake{25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}
+@keyframes pop{40%{transform:scale(1.03)}}
+
+.feedback{
+  margin-top:20px;
+  border-radius:20px;
+  padding:14px 16px;
+  font-size:1.03rem;
+  border:3px solid;
+}
+.feedback.good{background:var(--g-soft);border-color:var(--g)}
+.feedback.bad{background:var(--bad-bg);border-color:var(--bad-line)}
+.feedback .head{font-weight:700;font-size:1.15rem;margin-bottom:6px}
+.feedback.good .head{color:var(--g-dark)}
+.feedback.bad .head{color:var(--bad)}
+.feedback .ans{margin-bottom:10px}
+.feedback .trick{
+  background:#fff;
+  border:3px dashed var(--g-shade);
+  border-radius:16px;
+  padding:10px 14px;
+}
+.feedback .trick b{display:block;color:var(--g-dark);margin-bottom:2px}
+.next-row{margin-top:18px;display:flex;justify-content:flex-end}
+.hint{margin-top:16px;font-size:.85rem;color:var(--muted);text-align:center}
+
+/* ---------- result ---------- */
+.score-card{text-align:center}
+.ring{
+  --p:0;
+  width:178px;height:178px;border-radius:50%;
+  margin:4px auto 14px;
+  background:conic-gradient(var(--g) calc(var(--p) * 1%), var(--g-soft) 0);
+  display:grid;place-items:center;
+  position:relative;
+}
+.ring::before{content:"";position:absolute;inset:16px;background:#fff;border-radius:50%}
+.ring .inner{position:relative;line-height:1}
+.ring .inner b{font-size:3.1rem;font-weight:700;color:var(--g-deep)}
+.ring .inner small{font-size:1.2rem;color:var(--muted);font-weight:500}
+.ring .inner div{margin-top:6px;font-weight:600;color:var(--g-dark)}
+.score-card .msg{font-size:1.4rem;font-weight:700;color:var(--g-deep)}
+.score-card .sub{color:var(--muted)}
+.res-actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.res-actions .btn:only-child{grid-column:1/-1}
+h2.sec{margin:30px 4px 12px;font-size:1.25rem;font-weight:600;color:var(--g-deep)}
+.tb{display:grid;gap:12px}
+.tb-row{display:grid;grid-template-columns:minmax(110px,190px) 1fr auto;gap:12px;align-items:center;font-size:.98rem;font-weight:500}
+.tb-bar{height:16px;border-radius:999px;background:var(--g-soft);overflow:hidden}
+.tb-bar i{display:block;height:100%;border-radius:999px;background:var(--g)}
+.tb-bar i.mid{background:#facc15}
+.tb-bar i.low{background:var(--bad)}
+.review{display:grid;gap:14px}
+.rev{
+  background:#fff;
+  border:3px solid var(--bad-line);
+  border-radius:20px;
+  padding:14px 16px;
+}
+.rev .rq{font-weight:600;margin-bottom:4px;color:var(--g-deep)}
+.rev pre.code{margin:6px 0 10px;font-size:.85rem}
+.rev .rs{font-size:.96rem;margin-bottom:8px}
+.rev .rs em{font-style:normal;font-weight:700}
+.rev .rs .x{color:var(--bad)}
+.rev .rs .v{color:var(--g-dark)}
+.rev .rt{font-size:.97rem;background:var(--g-soft);border-radius:14px;padding:9px 12px}
+.perfect{padding:20px;text-align:center;font-weight:600;font-size:1.15rem;margin-top:26px}
+
+/* confetti */
+.confetti{position:fixed;top:-14px;width:10px;height:14px;border-radius:3px;z-index:50;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.9}}
+
+@media (max-width:520px){
+  .card{padding:16px}
+  .tb-row{grid-template-columns:1fr auto}
+  .tb-row .tb-bar{grid-column:1/-1;order:3}
+  .res-actions{grid-template-columns:1fr}
+  .hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important}
+  .confetti{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- START -->
+  <section id="start">
+    <div class="card hero">
+      <svg class="mascot" viewBox="0 0 100 100" aria-hidden="true">
+        <ellipse cx="50" cy="90" rx="26" ry="5" fill="#bbf7d0"/>
+        <path d="M50 78 C50 58 50 50 50 40" stroke="#16a34a" stroke-width="6" stroke-linecap="round" fill="none"/>
+        <path d="M50 46 C28 48 16 36 14 18 C34 16 48 26 50 46Z" fill="#22c55e"/>
+        <path d="M50 38 C70 40 84 28 86 10 C66 8 52 18 50 38Z" fill="#4ade80"/>
+        <circle cx="50" cy="72" r="22" fill="#fff" stroke="#86efac" stroke-width="4"/>
+        <circle cx="42" cy="70" r="3.2" fill="#14532d"/>
+        <circle cx="58" cy="70" r="3.2" fill="#14532d"/>
+        <path d="M44 78 Q50 84 56 78" stroke="#14532d" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <circle cx="37" cy="77" r="4" fill="#fecdd3" opacity=".8"/>
+        <circle cx="63" cy="77" r="4" fill="#fecdd3" opacity=".8"/>
+      </svg>
+      <h1>Supabase Mini Test</h1>
+      <p>30 MCQs. Option pe click karo, foran pata chal jayega sahi tha ya galat. Galat hua to ek cute si trick milegi jo yaad reh jaye.</p>
+      <button class="btn big" id="startAll">Poora test shuru karo (30)</button>
+      <label class="opt-row"><input type="checkbox" id="shuffleQs"> Sawal random order mein chahiye</label>
+    </div>
+    <div class="topics-title">Ya ek part chuno</div>
+    <div class="topic-grid" id="topicGrid"></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="hidden">
+    <div class="top">
+      <span class="pill" id="topicPill"></span>
+      <span class="pill" id="counter"></span>
+      <span class="pill score" id="scorePill"></span>
+    </div>
+    <div class="bar" role="progressbar" aria-label="Progress"><i id="barFill"></i></div>
+    <div class="card">
+      <div class="q-text" id="qText"></div>
+      <div id="codeSlot"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback hidden" id="feedback" aria-live="polite"></div>
+      <div class="next-row"><button class="btn hidden" id="nextBtn"></button></div>
+    </div>
+    <p class="hint">Keyboard: 1-4 ya A-D se jawab, Enter se agla sawal.</p>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" class="hidden"></section>
+
+</div>
+
+<script>
+/* ---------------------------------------------------------
+   DATA: [question, [options], correctIndex, trick, codeSnippet?]
+   --------------------------------------------------------- */
+const TOPICS = [
+{ name:"Part 1: Theory", nick:"Theory & Concepts", qs:[
+ ["What is the main purpose of the `select('*')` command in Supabase?",
+  ["To add new data into a table.","To fetch all the data from a table.","To delete the entire database.","To change a user's password."],1,
+  "select = dekho aur le aao. '*' ka matlab sab kuch. Yaani poori table ka data."],
+ ["Which operation should you use when you want to add a brand new item to your database?",
+  ["select","delete","update","insert"],3,
+  "Insert = andar daalo, naya item. select dekhta hai, update badalta hai, delete mitata hai."],
+ ["Why is `.eq()` so important when using delete or update?",
+  ["It makes the internet speed faster.","It points to one specific row to change or delete.","It creates a brand new ID for the item.","It helps to design the website layout."],1,
+  "eq = equal, yaani nishana. Kis row pe kaam karna hai wo yahi batata hai. Bina eq ke tir andhere mein."],
+ ["Where does Supabase safely hide the passwords when a new user registers?",
+  ["Inside the normal tables we create.","Inside the React code files.","In a hidden authentication table.","In the user's internet browser."],2,
+  "Password ki tijori alag hai: hidden auth table. Tumhari normal tables ya React code mein password nahi rakhte."],
+ ["What is the job of `supabase.auth.signUp`?",
+  ["To create a brand new user account.","To delete a user's account completely.","To log in an existing user.","To log out a user from the website."],0,
+  "Sign UP = naya banda upar chadha, naya account bana. Purane bande ke liye signIn hota hai."],
+ ["What does `supabase.auth.signInWithPassword` do?",
+  ["It creates a new password for the user.","It checks the details to log the user in.","It registers a completely new user.","It deletes the password from the database."],1,
+  "Naam hi padh lo: Sign IN With Password = password se andar aao. Details check hoti hain, login ho jata hai."],
+ ["If you see a \"403 Forbidden\" error when trying to insert data, what does it usually mean?",
+  ["Your internet is not working.","Row Level Security (RLS) is blocking it.","Your email is incorrect.","The database is completely full."],1,
+  "403 = Forbidden = mana hai. Supabase mein iska matlab aksar RLS ne darwaza band kar diya. Policy lagao."],
+ ["Why do developers sometimes turn OFF the \"Confirm Email\" setting in Supabase?",
+  ["Because emails cost too much money.","So they can test accounts without opening Gmail.","To make the website look more colorful.","Because passwords are not needed anymore."],1,
+  "Testing mein har baar Gmail khol ke confirm karna thaka deta hai. Isliye development mein off kar dete hain."],
+ ["What does the update command do in a database?",
+  ["It deletes the old table and makes a new one.","It brings data from the database to the screen.","It modifies data that is already in the table.","It creates a brand new item in the database."],2,
+  "update = purane ko naya kar do. Table wahi rehti hai, bas data badalta hai."],
+ ["What does a \"429 Too Many Requests\" error mean?",
+  ["The password you typed is too long.","You sent too many requests very quickly.","You need to write more React code.","The Supabase website is shut down."],1,
+  "429 = 'bas karo bhai, saans lo'. Tum ne bohot jaldi bohot requests bhej di. Thori der ruko."],
+ ["What is a \"Boolean\" data type in the Supabase table?",
+  ["A type that holds only numbers.","A type that holds large paragraphs.","A type that is only true or false.","A type that holds user passwords."],2,
+  "Boolean = switch. Sirf do halat: on (true) ya off (false). Haan ya na."],
+ ["When a user clicks the \"Logout\" button, which action should happen in the background?",
+  ["supabase.auth.signUp","supabase.auth.signOut","supabase.auth.signIn","supabase.auth.deleteUser"],1,
+  "Sign OUT = bahar nikalna. Logout button = signOut. Account delete nahi hota."],
+ ["Why do we need the `useState` hook when dealing with authentication?",
+  ["To change the background color of the page.","To remember if a user is logged in or not.","To send an email to the user automatically.","To create a new database table."],1,
+  "useState React ki yaad-dasht hai. Wo yaad rakhta hai user login hai ya nahi, aur screen usi hisaab se badalti hai."],
+ ["What happens if you run a delete command WITHOUT using `.eq()`?",
+  ["Nothing will happen at all.","It will only delete the first row.","It might delete all the rows in the table.","It will log the user out of the app."],2,
+  "delete + eq = ek row. delete bina eq = jhaadu poore ghar pe, saari rows ud sakti hain. Hamesha eq lagao."],
+ ["What does the `id` column in a table usually do?",
+  ["It gives a unique identity to every single row.","It stores the password of the user safely.","It counts how many times a user logged in.","It connects the website to the internet."],0,
+  "id = row ka shanakhti card. Har row ki apni alag pehchaan, koi do same nahi."]
+]},
+{ name:"Part 2: Code & Logic", nick:"Code & Logic", qs:[
+ ["What will this code return?",
+  ["Only one item from the list.","All the items inside the 'items' table.","The total count of the items.","An empty screen."],1,
+  "from('items') = items table, select('*') = sab kuch. Poori table ke saare items.",
+  "supabase.from('items').select('*')"],
+ ["What will happen if the password is only 3 characters long?",
+  ["The user is created successfully.","The code ignores the password entirely.","The error variable will contain an error message.","The website will close automatically."],2,
+  "Supabase chhota password nahi leta. Crash nahi hota, bas `error` mein message bhar deta hai. Yaad rakho: data ya error, dono mein se ek bharta hai.",
+  "const { data, error } = await supabase.auth.signUp({ email, password })"],
+ ["What does this code do?",
+  ["It updates the price of a Civic to 5000.","It adds a new car named Civic to the table.","It deletes a car named Civic from the table.","It finds a car named Civic and shows it."],1,
+  "insert([ { ... } ]) = naya row daalo. Bracket ke andar naya car ka data hai, to naya Civic add hua.",
+  "supabase.from('cars').insert([{ name: 'Civic', price: 5000 }])"],
+ ["Which note will be deleted?",
+  ["The 5th note in the database list.","The note that has the ID number 5.","All notes that have 5 words in them.","It will delete 5 notes at the same time."],1,
+  "eq('id', 5) = jiski id 5 hai. Ye 5th number wala nahi, ID wala note hai. Pehchaan hamesha id se.",
+  "supabase.from('notes').delete().eq('id', 5)"],
+ ["What is the purpose of checking `if (error)` after a Supabase command?",
+  ["To stop the website from loading.","To handle mistakes and show alerts to the user.","To make the database run much faster.","To automatically delete the wrong data."],1,
+  "if (error) = smoke alarm. Galti pakro aur user ko alert dikhao, chup chaap fail na hone do."],
+ ["What is happening here?",
+  ["It adds a new user with an active status.","It checks if user 1 is currently active.","It changes the status of user 1 to 'active'.","It deletes user 1 if they are not active."],2,
+  "update({...}) = kya badalna hai, eq(...) = kis ko. User 1 ka status 'active' ho gaya.",
+  "supabase.from('users').update({ status: 'active' }).eq('id', 1)"],
+ ["In a login function, what does `e.preventDefault()` do?",
+  ["It stops the page from refreshing automatically.","It prevents hackers from stealing the password.","It clears the email and password inputs.","It checks if the email is typed correctly."],0,
+  "prevent = rok do, default = form ka apna refresh. Submit pe page reload nahi hota. Hackers se iska koi talluq nahi."],
+ ["What does this UI code do?",
+  ["It shows both the Dashboard and the Form together.","If a user is logged in, it shows the Dashboard.","It deletes the user if they look at the LoginForm.","If a user is logged in, it shows the LoginForm."],1,
+  "'?' ka matlab agar haan to pehla, ':' ka matlab warna doosra. User hai to Dashboard, nahi to LoginForm.",
+  "{user ? <Dashboard/> : <LoginForm/>}"],
+ ["How does this affect the webpage?",
+  ["It makes the text bold and red.","It hides the text by turning it into dots.","It creates a strong password automatically.","It blocks short passwords from being typed."],1,
+  "type='password' sirf nazar se chhupata hai: letters dots (...) ban jate hain. Strong ya short ka koi check nahi.",
+  "<input type=\"password\" />"],
+ ["What is it checking before logging in?",
+  ["If the email and password match the database.","If the email has an \"@\" symbol in it.","If the user left the input boxes empty.","If the password is strong enough."],2,
+  "'!' = nahi hai. Email ya password khali hai to return, yaani ruk jao. Ye sirf khali box check hai, match Supabase karta hai.",
+  "if (!email || !password) return;"],
+ ["Where is this code usually placed?",
+  ["Right after a user successfully logs in.","Right before a user clicks the register button.","When the user clicks the logout button.","Inside the database table settings."],0,
+  "Login kamyab hua to foran user ko state mein save karo. data.user wahi se aata hai. Logout pe ulta hota hai.",
+  "setUser(data.user)"],
+ ["What will this exactly do?",
+  ["It will make product 10 available.","It will make product 10 unavailable.","It will delete product 10 from the system.","It will hide product 10 from the database."],1,
+  "available: false = nahi hai. Product 10 delete nahi hua, bas switch off ho gaya. false = band.",
+  "supabase.from('products').update({ available: false }).eq('id', 10)"],
+ ["If we write `await supabase.auth.signOut()`, what happens to our React app?",
+  ["The user's account is permanently deleted.","The Supabase project is turned off.","The current user's session is ended.","A new user account is created."],2,
+  "signOut = sirf session khatam, banda bahar. Account ya project ko kuch nahi hota."],
+ ["What is missing in this delete command?",
+  ["It is missing the .insert() command.","It is missing the .eq() command to target one book.","It is missing the password of the user.","It is missing the React state variable."],1,
+  "delete() akela kaun si book? .eq() batata hai kis ko. Bina eq ke saari books ud sakti hain.",
+  "await supabase.from('books').delete()"],
+ ["What does this code do?",
+  ["It sends an email directly to Supabase.","It updates the React state as the user types.","It deletes the email from the input box.","It checks if the email is already registered."],1,
+  "onChange = har key press pe chalta hai. e.target.value = jo abhi type hua. setEmail usse state mein save karta hai.",
+  "onChange={(e) => setEmail(e.target.value)}"]
+]}
+];
+
+/* ---------------------------------------------------------
+   HELPERS
+   --------------------------------------------------------- */
+const $ = id => document.getElementById(id);
+const LETTERS = ["A","B","C","D"];
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const fmt = s => esc(s).replace(/`([^`]+)`/g,"<code>$1</code>");
+function shuffle(a){
+  a = a.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function show(id){
+  ["start","quiz","result"].forEach(s => $(s).classList.toggle("hidden", s!==id));
+  window.scrollTo({top:0});
+}
+
+const ALL = [];
+TOPICS.forEach((t,ti) => t.qs.forEach(q => ALL.push({
+  topic:ti, q:q[0], opts:q[1], ans:q[2], trick:q[3], code:q[4] || ""
+})));
+
+/* ---------------------------------------------------------
+   STATE
+   --------------------------------------------------------- */
+let pool = [], idx = 0, score = 0, locked = false;
+let order = [];
+let results = [];
+let label = "";
+
+/* ---------------------------------------------------------
+   START SCREEN
+   --------------------------------------------------------- */
+function buildTopics(){
+  const g = $("topicGrid");
+  g.innerHTML = TOPICS.map((t,i) =>
+    `<button class="topic" data-t="${i}"><b>${esc(t.name)}</b><span>${t.qs.length} sawal</span></button>`
+  ).join("");
+  g.querySelectorAll(".topic").forEach(b =>
+    b.addEventListener("click", () => start(ALL.filter(x => x.topic === +b.dataset.t), TOPICS[+b.dataset.t].name))
+  );
+}
+
+function start(items, lbl){
+  pool = $("shuffleQs").checked ? shuffle(items) : items.slice();
+  label = lbl;
+  idx = 0; score = 0; results = [];
+  show("quiz");
+  render();
+}
+
+/* ---------------------------------------------------------
+   QUESTION SCREEN
+   --------------------------------------------------------- */
+function render(){
+  locked = false;
+  const item = pool[idx];
+  order = shuffle(item.opts.map((_,i) => i));
+
+  $("topicPill").textContent = label === "Poora test" ? TOPICS[item.topic].name : label;
+  $("counter").textContent = `Sawal ${idx+1} / ${pool.length}`;
+  $("scorePill").textContent = `Score: ${score}`;
+  $("barFill").style.width = (idx / pool.length * 100) + "%";
+  $("qText").innerHTML = fmt(item.q);
+  $("codeSlot").innerHTML = item.code ? `<pre class="code">${esc(item.code)}</pre>` : "";
+
+  $("options").innerHTML = order.map((oi,k) =>
+    `<button class="option" data-k="${k}">
+       <span class="letter">${LETTERS[k]}</span>
+       <span class="txt">${fmt(item.opts[oi])}</span>
+       <span class="mark"></span>
+     </button>`
+  ).join("");
+  $("options").querySelectorAll(".option").forEach(b =>
+    b.addEventListener("click", () => pick(+b.dataset.k))
+  );
+
+  const fb = $("feedback");
+  fb.className = "feedback hidden";
+  fb.innerHTML = "";
+  $("nextBtn").classList.add("hidden");
+}
+
+function pick(k){
+  if(locked) return;
+  locked = true;
+  const item = pool[idx];
+  const correctK = order.indexOf(item.ans);
+  const ok = k === correctK;
+  if(ok) score++;
+  results.push({item, correct:ok, picked:item.opts[order[k]]});
+
+  $("options").querySelectorAll(".option").forEach((b,i) => {
+    b.disabled = true;
+    const mark = b.querySelector(".mark");
+    if(i === correctK){ b.classList.add("correct"); mark.textContent = "\u2713"; }
+    else if(i === k){ b.classList.add("wrong"); mark.textContent = "\u2717"; }
+    else b.classList.add("dim");
+  });
+
+  const fb = $("feedback");
+  if(ok){
+    fb.className = "feedback good";
+    fb.innerHTML = `<div class="head">Sahi jawab! Shabash \u{1F389}</div>`;
+  } else {
+    fb.className = "feedback bad";
+    fb.innerHTML =
+      `<div class="head">Oops, galat ho gaya \u{1F648}</div>
+       <div class="ans">Sahi jawab: <b>${fmt(item.opts[item.ans])}</b></div>
+       <div class="trick"><b>Trick \u{1F331}</b>${fmt(item.trick)}</div>`;
+  }
+  $("scorePill").textContent = `Score: ${score}`;
+  $("barFill").style.width = ((idx+1) / pool.length * 100) + "%";
+
+  const nb = $("nextBtn");
+  nb.textContent = idx === pool.length - 1 ? "Result dekho" : "Agla sawal";
+  nb.classList.remove("hidden");
+  nb.focus({preventScroll:true});
+  fb.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+function next(){
+  if(idx === pool.length - 1){ finish(); return; }
+  idx++;
+  render();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* ---------------------------------------------------------
+   RESULT SCREEN
+   --------------------------------------------------------- */
+function confetti(){
+  const colors = ["#22c55e","#4ade80","#86efac","#bbf7d0","#fde68a","#fda4af"];
+  for(let i=0;i<46;i++){
+    const s = document.createElement("span");
+    s.className = "confetti";
+    s.style.left = Math.random()*100 + "vw";
+    s.style.background = colors[i % colors.length];
+    s.style.animationDuration = (2.2 + Math.random()*2) + "s";
+    s.style.animationDelay = (Math.random()*0.8) + "s";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 5500);
+  }
+}
+
+function finish(){
+  const total = pool.length;
+  const pct = Math.round(score / total * 100);
+  let msg, sub;
+  if(pct === 100){ msg = "Perfect! Ek bhi galti nahi \u{1F31F}"; sub = "Supabase ke ye topics ekdum pakke hain."; }
+  else if(pct >= 80){ msg = "Zabardast! \u{1F389}"; sub = "Bas thori si polish baaki hai."; }
+  else if(pct >= 60){ msg = "Acha hai, aur behtar ho sakta hai \u{1F331}"; sub = "Neeche di gayi tricks ek baar parh lo."; }
+  else if(pct >= 40){ msg = "Theek-thaak, ugte raho \u{1F33F}"; sub = "Tricks parho aur dobara try karo, score upar jayega."; }
+  else { msg = "Koi baat nahi, beej abhi boya hai \u{1F331}"; sub = "Tricks dhyan se parho, phir dobara test do."; }
+
+  const per = {};
+  results.forEach(r => {
+    const t = r.item.topic;
+    per[t] = per[t] || {c:0, n:0};
+    per[t].n++; if(r.correct) per[t].c++;
+  });
+  const rows = Object.keys(per).map(t => {
+    const {c,n} = per[t]; const p = Math.round(c/n*100);
+    const cls = p >= 80 ? "" : (p >= 50 ? "mid" : "low");
+    return `<div class="tb-row"><span>${esc(TOPICS[t].name)}</span>
+      <div class="tb-bar"><i class="${cls}" style="width:${p}%"></i></div>
+      <span>${c}/${n}</span></div>`;
+  }).join("");
+
+  const wrong = results.filter(r => !r.correct);
+  const review = wrong.length
+    ? `<h2 class="sec">Galat sawal aur unki tricks (${wrong.length})</h2>
+       <div class="review">` + wrong.map(r =>
+        `<div class="rev">
+           <div class="rq">${fmt(r.item.q)}</div>
+           ${r.item.code ? `<pre class="code">${esc(r.item.code)}</pre>` : ""}
+           <div class="rs"><em class="x">Tumne:</em> ${fmt(r.picked)}<br><em class="v">Sahi:</em> ${fmt(r.item.opts[r.item.ans])}</div>
+           <div class="rt"><b>Trick \u{1F331}</b> ${fmt(r.item.trick)}</div>
+         </div>`).join("") + `</div>`
+    : `<div class="card perfect">Koi galat sawal nahi. Mubarak ho! \u{1F389}</div>`;
+
+  $("result").innerHTML =
+    `<div class="card score-card">
+       <div class="ring" id="ring"><div class="inner"><b>${score}</b><small>/${total}</small><div>${pct}%</div></div></div>
+       <div class="msg">${msg}</div>
+       <div class="sub">${sub}</div>
+       <div class="res-actions">
+         ${wrong.length ? `<button class="btn" id="retryWrong">Sirf galat wale dobara (${wrong.length})</button>` : ""}
+         <button class="btn white" id="restart">Shuru se dobara</button>
+       </div>
+     </div>
+     ${Object.keys(per).length > 1 ? `<h2 class="sec">Part ke hisaab se</h2><div class="card"><div class="tb">${rows}</div></div>` : ""}
+     ${review}`;
+
+  const rw = $("retryWrong");
+  if(rw) rw.addEventListener("click", () => start(wrong.map(r => r.item), "Galat wale"));
+  $("restart").addEventListener("click", () => show("start"));
+  show("result");
+
+  // animate ring fill
+  const ring = $("ring");
+  requestAnimationFrame(() => { ring.style.transition = "none"; ring.style.setProperty("--p", pct); });
+  if(pct >= 70) confetti();
+}
+
+/* ---------------------------------------------------------
+   EVENTS
+   --------------------------------------------------------- */
+$("startAll").addEventListener("click", () => start(ALL, "Poora test"));
+$("nextBtn").addEventListener("click", next);
+
+document.addEventListener("keydown", e => {
+  if($("quiz").classList.contains("hidden")) return;
+  const key = e.key.toLowerCase();
+  if(!locked){
+    let k = -1;
+    if(["1","2","3","4"].includes(key)) k = +key - 1;
+    else if(["a","b","c","d"].includes(key)) k = key.charCodeAt(0) - 97;
+    if(k >= 0 && k < order.length) pick(k);
+  } else if(key === "enter"){
+    if(document.activeElement !== $("nextBtn")){ e.preventDefault(); next(); }
+  }
+});
+
+buildTopics();
+</script>
+</body>
+</html>
